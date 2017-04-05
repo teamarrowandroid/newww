@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import AVFoundation                           //import
+import AVFoundation
+import FirebaseStorage//import
 class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     
    public var pid:String!
-    
+    var soundFileURL:Any!
     @IBOutlet weak var showTime: UILabel!
     
     var counter = 10
@@ -42,7 +43,7 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         let fileMgr = FileManager.default
         let dirPaths = fileMgr.urls(for: .documentDirectory,
                                     in: .userDomainMask)
-        let soundFileURL = dirPaths[0].appendingPathComponent("sound.caf")
+        soundFileURL = dirPaths[0].appendingPathComponent("sound.caf")
         
         let recordSettings =
             [AVEncoderAudioQualityKey: AVAudioQuality.min.rawValue,
@@ -59,7 +60,7 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         }
         
         do {
-            try audioRecorder = AVAudioRecorder(url: soundFileURL,
+            try audioRecorder = AVAudioRecorder(url: soundFileURL as! URL,
                                                 settings: recordSettings as [String : AnyObject])
             audioRecorder?.prepareToRecord()
         } catch let error as NSError {
@@ -113,8 +114,22 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         } else {
             audioPlayer?.stop()
         }
+        /// uploading audio
+        let fileName = UUID().uuidString + ".m4a"
         
+        FIRStorage.storage().reference().child("aucomments").child(fileName).putFile(soundFileURL as! URL, metadata: nil) { (metadata, error) in
+            if error != nil {
+                print(error ?? "error")
+            }
+            
+            if let downloadUrl = metadata?.downloadURL()?.absoluteString {
+                print(downloadUrl)
+                let values: [String : Any] = ["audioUrl": downloadUrl]
+               // self.sendMessageWith(properties: values)
+            }
+        }
         
+         /// uploading audio end
     }
     
     @IBAction func playAction(_ sender: UIButton) {
