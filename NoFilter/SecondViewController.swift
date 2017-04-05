@@ -14,6 +14,7 @@ struct UserProfile {
     var fullName: String = ""
     var phoneNumber: String = ""
     var profileImage: String = ""
+    
     var username: String = ""
     var uId: String = ""
     var email: String = ""

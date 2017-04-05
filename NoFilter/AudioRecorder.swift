@@ -8,12 +8,14 @@
 
 import UIKit
 import AVFoundation
-import FirebaseStorage//import
+import Firebase//import
+import FirebaseDatabase
 class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     
    public var pid:String!
     var soundFileURL:Any!
+    var postRef : FIRDatabaseReference!
     @IBOutlet weak var showTime: UILabel!
     
     var counter = 10
@@ -26,8 +28,8 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         super.viewDidLoad()
         //shadow for numbers
         
-        
-       print("PID IS THIS.........>>>>>>>\(pid)")
+       postRef = FIRDatabase.database().reference().child("posts")
+       print("PID IS THIS.........>>>>>>>\(self.pid)")
         showTime.layer.shadowOffset = CGSize(width: 0, height: 0)
         showTime.layer.shadowOpacity = 3
         showTime.layer.shadowRadius = 6
@@ -124,8 +126,15 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
             
             if let downloadUrl = metadata?.downloadURL()?.absoluteString {
                 print(downloadUrl)
-                let values: [String : Any] = ["audioUrl": downloadUrl]
+                let currentTime = Date()
+                let dateFormat = DateFormatter()
+                dateFormat.timeStyle = .medium
+                dateFormat.dateStyle = .medium
+                
+                let values: [String : Any] = ["audioUrl": downloadUrl,"timestamp":dateFormat.string(from: currentTime),"commentedBy":FIRAuth.auth()?.currentUser?.uid]
                // self.sendMessageWith(properties: values)
+                self.postRef.child(self.pid).child("comments").child("AudioComments").childByAutoId().updateChildValues(values)
+                
             }
         }
         

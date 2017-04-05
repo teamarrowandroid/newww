@@ -283,12 +283,9 @@
                                                                 <action selector="onClickUnlikeB:" destination="CvU-va-R0X" eventType="touchUpInside" id="LBA-Cw-n1U"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebx-eG-zQW">
+                                                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebx-eG-zQW">
                                                             <rect key="frame" x="119" y="2" width="30" height="27"/>
                                                             <state key="normal" image="A_un"/>
-                                                            <connections>
-                                                                <segue destination="eDa-dG-qae" kind="show" identifier="do" id="Fqr-Sf-xlM"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -421,7 +418,7 @@
                             <constraint firstItem="aVa-Sj-lfM" firstAttribute="top" secondItem="VZi-GG-RkO" secondAttribute="bottom" constant="8" symbolic="YES" id="tdS-ck-XZA"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="home-7" id="K2X-7d-NzD"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="home-7" id="K2X-7d-NzD" colorLabel="IBBuiltInLabel-Red" propertyAccessControl="all"/>
                     <connections>
                         <outlet property="editStatusArea" destination="Ojo-TS-x3G" id="GgP-Gr-iEE"/>
                         <outlet property="editStatusButton" destination="wKX-ZK-HEW" id="aBs-dP-BgA"/>
@@ -429,11 +426,12 @@
                         <outlet property="showStatus" destination="lgQ-9Y-sml" id="yR6-oV-gxY"/>
                         <outlet property="userProfileName" destination="RaX-O1-9K3" id="LqU-R9-DXf"/>
                         <outlet property="userProfilePic" destination="1x0-z9-CyR" id="Ifc-h8-ZGM"/>
+                        <segue destination="eDa-dG-qae" kind="show" identifier="do" id="tE5-lS-8vo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lvU-el-Q8Q" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3152.8000000000002" y="-589.65517241379314"/>
+            <point key="canvasLocation" x="3279" y="-681"/>
         </scene>
         <!--Text Comments Controller-->
         <scene sceneID="LGk-qY-ykp">
@@ -622,7 +620,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oHz-hj-gmW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3977" y="-1531"/>
+            <point key="canvasLocation" x="4081" y="-1532"/>
         </scene>
         <!--AudioController-->
         <scene sceneID="9R6-PE-nmn">
@@ -734,9 +732,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaM-h2-A9y">
-                                <rect key="frame" x="149" y="270" width="77" height="30"/>
+                                <rect key="frame" x="177" y="274" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Take Photo"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.28983720520793627" green="0.75318050002440429" blue="0.18433855057691692" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="takePhoto:" destination="h6v-hO-kBi" eventType="touchUpInside" id="cSf-6b-s1O"/>
                                 </connections>
@@ -757,7 +757,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cVg-Eg-hf9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1118" y="976"/>
+            <point key="canvasLocation" x="1610" y="976"/>
         </scene>
         <!--Friends-->
         <scene sceneID="kAf-0k-vyH">
@@ -818,7 +818,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vf1-AW-inG" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2952.8000000000002" y="122.78860569715144"/>
+            <point key="canvasLocation" x="2527" y="107"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="drM-sa-NRo">
@@ -942,4 +942,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="nQr-tq-eFl"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>

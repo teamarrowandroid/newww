@@ -121,6 +121,9 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell=tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let user=cell.viewWithTag(2) as! UILabel
         let imghs=cell.viewWithTag(3) as! UIImageView
+        let vB=cell.viewWithTag(7) as! UIButton
+        
+        vB.addTarget(self, action: #selector(FirstViewController.voiceBtnHandler(sender:)), for: UIControlEvents.touchUpInside)
         
         userCellPosts = uPostsList[indexPath.row]
         print("postrow",userCellPosts)
@@ -131,9 +134,9 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if data != nil {  //Some time Data value will be nil so we need to validate such things
         imghs.image = UIImage(data: data! as Data)
             cell.postId=self.uPostsList[indexPath.row].postId
-            valueToPass=self.uPostsList[indexPath.row].postId
+            self.valueToPass=self.uPostsList[indexPath.row].postId
            
-            print("show>>>>>>\(valueToPass)")
+            print("show>>>>>>\(self.valueToPass)")
         }
         
 //         performSegue(withIdentifier: "do", sender: self)
@@ -247,11 +250,20 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "do" {
-            if let indexPath = postTable.indexPathForSelectedRow {
+           
                 let controller = segue.destination as! AudioRecorder
-                controller.pid = valueToPass
-            }
+                controller.pid = self.valueToPass
+                print("PID from Segue \(self.valueToPass)")
+            
         }
     }
+    
+    func voiceBtnHandler(sender:UIButton)
+    {
+         self.performSegue(withIdentifier: "do", sender:self)
+        }
+       
+    
+    
 }
 
