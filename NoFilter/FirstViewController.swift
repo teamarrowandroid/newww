@@ -59,6 +59,7 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
          editStatusArea.isEnabled=false
          editStatusArea.isHidden=true
+        print("userprofileStatus : \(self.userProfile.status)")
         
         //status
         
@@ -159,8 +160,15 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.userProfile.key = snapshot.key
                 self.userProfile.fullName = dictionary["fullName"] as! String
                 self.userProfile.profileImage = dictionary["profileImage"] as! String
+                
+                var statusTemp = dictionary["userStatus"] as! String
+                if statusTemp != nil {
+                    self.userProfile.status = statusTemp
+                    print(statusTemp)
+                }
                 //print("fullName",self.userProfile.fullName)
                 self.userProfileName.text = self.userProfile.fullName
+                self.showStatus.text = self.userProfile.status
                 let url = NSURL(string: self.userProfile.profileImage)
                 let data = NSData(contentsOf: url! as URL) // this URL convert into Data
                 if data != nil {  //Some time Data value will be nil so we need to validate such things

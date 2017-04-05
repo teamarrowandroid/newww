@@ -36,6 +36,8 @@
 		FD40B4601E4BFFF400AFD61C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD40B45F1E4BFFF400AFD61C /* GoogleService-Info.plist */; };
 		FD6B350D1E55380200475370 /* RegisterScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B350C1E55380200475370 /* RegisterScreenView.swift */; };
 		FDA677441E7A01CE005D04FC /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA677431E7A01CE005D04FC /* CameraViewController.swift */; };
+		FDA7F1981E95892C00118C53 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7F1961E95892C00118C53 /* FriendsViewController.swift */; };
+		FDA7F1991E95892C00118C53 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7F1971E95892C00118C53 /* ImageTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,8 @@
 		FD40B45F1E4BFFF400AFD61C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD6B350C1E55380200475370 /* RegisterScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterScreenView.swift; sourceTree = "<group>"; };
 		FDA677431E7A01CE005D04FC /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		FDA7F1961E95892C00118C53 /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		FDA7F1971E95892C00118C53 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,8 @@
 				10D52CDD1E8AD97C009269FE /* TempViewController.swift */,
 				10D52CDF1E8B4EA2009269FE /* LoginViewController.swift */,
 				10D52CE11E8B8047009269FE /* CommentsViewController.swift */,
+				FDA7F1961E95892C00118C53 /* FriendsViewController.swift */,
+				FDA7F1971E95892C00118C53 /* ImageTableViewCell.swift */,
 				10D52CE31E8B832E009269FE /* CommentsViewCell.swift */,
 				10B889FC1E91696D0054CA29 /* AudioRecorder.swift */,
 				102C54B51E9425310070AD85 /* FloatingBtnViewController.swift */,
@@ -295,12 +301,14 @@
 				10D52CD51E8841E8009269FE /* TxtCommentCellTableViewCell.swift in Sources */,
 				55C8DE201E4BFCDB00AB98DD /* AppDelegate.swift in Sources */,
 				104FA9681E819B7500E2AB13 /* DataViewController.swift in Sources */,
+				FDA7F1991E95892C00118C53 /* ImageTableViewCell.swift in Sources */,
 				102C54B61E9425310070AD85 /* FloatingBtnViewController.swift in Sources */,
 				FD6B350D1E55380200475370 /* RegisterScreenView.swift in Sources */,
 				10D52CDE1E8AD97C009269FE /* TempViewController.swift in Sources */,
 				A0C815041E8C9076001C99E8 /* ImagesTableViewController.swift in Sources */,
 				1832BE4F1E6A36920012C882 /* TableViewCell.swift in Sources */,
 				104FA9641E819A5800E2AB13 /* user.swift in Sources */,
+				FDA7F1981E95892C00118C53 /* FriendsViewController.swift in Sources */,
 				10D52CE41E8B832E009269FE /* CommentsViewCell.swift in Sources */,
 				10B889FD1E91696D0054CA29 /* AudioRecorder.swift in Sources */,
 				FDA677441E7A01CE005D04FC /* CameraViewController.swift in Sources */,
