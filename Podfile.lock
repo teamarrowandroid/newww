@@ -51,7 +51,7 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.9)
   - KCFloatingActionButton (2.2.0)
-  - Protobuf (3.2.0)
+  - Protobuf (3.2.1)
 
 DEPENDENCIES:
   - DKCamera
@@ -75,8 +75,8 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   KCFloatingActionButton: 8c71fa25774e422c8d407f82b4b27809d0cd5233
-  Protobuf: 745f59e122e5de98d4d7ef291e264a0eef80f58e
+  Protobuf: 2ccbaf193f6c65adc67745453ca0c13234c32796
 
-PODFILE CHECKSUM: 3f8369f6e0113c9333a57c3cef1560fce78122e2
+PODFILE CHECKSUM: 56d61b6c449b915300fa9eaa6a6b20f09afe4057
 
 COCOAPODS: 1.2.0

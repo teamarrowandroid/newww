@@ -12,6 +12,7 @@ import FirebaseDatabase
 
 class RegisterScreenView: UIViewController,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
+    @IBOutlet weak var signUpBtn: UIButton!
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var fullname: UITextField!
     @IBOutlet weak var email: UITextField!
@@ -30,7 +31,7 @@ class RegisterScreenView: UIViewController,UITextFieldDelegate,UIImagePickerCont
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         present(picker, animated: true, completion: nil)
     }
-    @IBAction func done(_ sender: Any) {
+  /*  @IBAction func done(_ sender: Any) {
         guard fullname.text != "", email.text != "",password.text != "" ,confirmpassword.text != "", phonenumber.text != "", username.text != ""else { return }
         if password.text == confirmpassword.text {
             FIRAuth.auth()?.createUser(withEmail: email.text!, password: password.text!, completion: {(user,error) in
@@ -98,7 +99,7 @@ class RegisterScreenView: UIViewController,UITextFieldDelegate,UIImagePickerCont
             print("Password does not match")
         }
         
-    }
+    }   */
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -120,7 +121,7 @@ class RegisterScreenView: UIViewController,UITextFieldDelegate,UIImagePickerCont
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true;
+        self.navigationController?.navigationBar.isHidden = false;
     }
     
     override func didReceiveMemoryWarning() {
@@ -158,4 +159,75 @@ class RegisterScreenView: UIViewController,UITextFieldDelegate,UIImagePickerCont
         return true
     }
 
+    @IBAction func signUpBtnAction(_ sender: UIButton) {
+        
+        guard fullname.text != "", email.text != "",password.text != "" ,confirmpassword.text != "", phonenumber.text != "", username.text != ""else { return }
+        if password.text == confirmpassword.text {
+            FIRAuth.auth()?.createUser(withEmail: email.text!, password: password.text!, completion: {(user,error) in
+                
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                if let user = user {
+                    let currentTime = Date()
+                    let dateFormat = DateFormatter()
+                    dateFormat.timeStyle = .medium
+                    dateFormat.dateStyle = .medium
+                    
+                    let changeRequest = FIRAuth.auth()?.currentUser?.profileChangeRequest();
+                    changeRequest?.displayName = self.fullname.text
+                    changeRequest?.commitChanges(completion: nil)
+                    if self.profileImg.image == nil {
+                        print("profile image is nill")
+                        let userInfo: [String: Any] = ["uId":user.uid,
+                                                       "fullName":self.fullname.text,
+                                                       "profileImage":"",
+                                                       "phoneNumber":self.phonenumber.text,
+                                                       "username":self.username.text,
+                                                       "timestamp":dateFormat.string(from: currentTime)]
+                        
+                        self.userRef.child("users").child(user.uid).setValue(userInfo)
+                        
+                        self.performSegue(withIdentifier: "signupToHome", sender: self)
+                    }
+                    else {
+                        let imageRef = self.userStorage.child("\(user.uid).jpg")
+                        let data = UIImageJPEGRepresentation(self.profileImg.image!, 0.5)
+                        let uploadTask = imageRef.put(data!,metadata:nil, completion: { (metadata,err) in
+                            if err != nil {
+                                print(err?.localizedDescription)
+                                
+                            }
+                            imageRef.downloadURL(completion: {(url,er) in
+                                if er != nil{
+                                    print(er?.localizedDescription)
+                                }
+                                if let url = url {
+                                    //For getting current time
+                                    
+                                    print("Photo Url :: \(url.absoluteString)")
+                                    
+                                    let userInfo: [String: Any] = ["uId":user.uid,
+                                                                   "fullName":self.fullname.text,
+                                                                   "profileImage":url.absoluteString,
+                                                                   "phoneNumber":self.phonenumber.text,
+                                                                   "username":self.username.text,
+                                                                   "timestamp":dateFormat.string(from: currentTime)]
+                                    
+                                    self.userRef.child("users").child(user.uid).setValue(userInfo)
+                                }
+                            })
+                            
+                        })
+                        uploadTask.resume()
+                        self.performSegue(withIdentifier: "signupToHome", sender: self)
+                    }
+                }
+            })
+        }else {
+            print("Password does not match")
+        }
+        
+
+    }
 }

@@ -18,6 +18,7 @@ struct UserProfile {
     var username: String = ""
     var uId: String = ""
     var email: String = ""
+    var status: String = ""
     var key: String = ""
     func getDict() -> [String:Any] {
         let dict = ["username": self.username,
@@ -56,6 +57,26 @@ struct UserPost {
 }
 
 
+struct UserComments {
+    
+    var comment: String=""
+    var commentedBy: String = ""
+    var timestamp: String = ""
+    var postId: String = ""
+    var type: String = ""
+    
+    func getDict() -> [String:AnyObject] {
+        let dict = ["comment": self.comment,
+                    "commentedBy": self.commentedBy,
+                    "timestamp":self.timestamp,
+                    "postId":self.postId,
+                    "type":self.type
+        ] as [String : Any]
+        return dict as [String : AnyObject]
+    }
+}
+
+
 class uProfile: NSObject{
     
     var fullname: String?
@@ -64,6 +85,14 @@ class uProfile: NSObject{
     var username: String?
     var uId: String?
 }
+
+class uComments: NSObject{
+    var comment: String?
+    var commentedBy: String?
+    var timestamp: String?
+    var type: String?
+}
+
 class uPost: NSObject{
     
     var author: String?

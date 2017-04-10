@@ -13,8 +13,9 @@ import FirebaseDatabase
 class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     
-   public var pid:String!
+    public var pid:String!
     var soundFileURL:Any!
+    var url:NSURL!
     var postRef : FIRDatabaseReference!
     @IBOutlet weak var showTime: UILabel!
     
@@ -29,7 +30,7 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         //shadow for numbers
         
        postRef = FIRDatabase.database().reference().child("posts")
-       print("PID IS THIS.........>>>>>>>\(self.pid)")
+//       print("PID IS THIS.........>>>>>>>\(self.pid)")
         showTime.layer.shadowOffset = CGSize(width: 0, height: 0)
         showTime.layer.shadowOpacity = 3
         showTime.layer.shadowRadius = 6
@@ -46,7 +47,7 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         let dirPaths = fileMgr.urls(for: .documentDirectory,
                                     in: .userDomainMask)
         soundFileURL = dirPaths[0].appendingPathComponent("sound.caf")
-        
+      // url = NSURL(string: (self.soundFileURL as AnyObject) as! String )
         let recordSettings =
             [AVEncoderAudioQualityKey: AVAudioQuality.min.rawValue,
              AVEncoderBitRateKey: 16,
@@ -91,13 +92,6 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
             recordDoneBtn.isHidden=false
             audioRecorder?.record()
         }
-        
-        
-        
-        
-        
-        
-        
     }
     
     
@@ -117,23 +111,23 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
             audioPlayer?.stop()
         }
         /// uploading audio
-        let fileName = UUID().uuidString + ".m4a"
+        let fileName = UUID().uuidString + ".caf"
         
-        FIRStorage.storage().reference().child("aucomments").child(fileName).putFile(soundFileURL as! URL, metadata: nil) { (metadata, error) in
+        FIRStorage.storage().reference().child("aucomments").child(fileName).putFile(soundFileURL as! URL , metadata: nil) { (metadata, error) in
             if error != nil {
                 print(error ?? "error")
             }
             
             if let downloadUrl = metadata?.downloadURL()?.absoluteString {
-                print(downloadUrl)
+                print("download url is >>>>>>>>\(downloadUrl)")
                 let currentTime = Date()
                 let dateFormat = DateFormatter()
                 dateFormat.timeStyle = .medium
                 dateFormat.dateStyle = .medium
                 
-                let values: [String : Any] = ["audioUrl": downloadUrl,"timestamp":dateFormat.string(from: currentTime),"commentedBy":FIRAuth.auth()?.currentUser?.uid]
+                let values: [String : Any] = ["comment": downloadUrl,"timestamp":dateFormat.string(from: currentTime),"commentedBy":FIRAuth.auth()?.currentUser?.uid,"type":"audio"]
                // self.sendMessageWith(properties: values)
-                self.postRef.child(self.pid).child("comments").child("AudioComments").childByAutoId().updateChildValues(values)
+                self.postRef.child(self.pid).child("comments").childByAutoId().updateChildValues(values)
                 
             }
         }
@@ -146,10 +140,10 @@ class AudioRecorder: UIViewController,AVAudioPlayerDelegate, AVAudioRecorderDele
         if audioRecorder?.isRecording == false {
             recordDoneBtn.isEnabled = true
             recordBtn.isEnabled = false
-            
+            var ll = "http://gaana.com/song/hamen-tumse-pyar-kitna-2"
             do {
                 try audioPlayer = AVAudioPlayer(contentsOf:
-                    (audioRecorder?.url)!)
+                    (soundFileURL as! URL))
                 audioPlayer!.delegate = self
                 audioPlayer!.prepareToPlay()
                 audioPlayer!.play()

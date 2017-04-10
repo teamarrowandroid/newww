@@ -121,12 +121,22 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell=tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let user=cell.viewWithTag(2) as! UILabel
         let imghs=cell.viewWithTag(3) as! UIImageView
+        let tB = cell.viewWithTag(8) as! UIButton
         let vB=cell.viewWithTag(7) as! UIButton
+
         
+        //imghs.layer.clipsToBounds= YES;
+        //imghs.layer.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Calling Segue functions to pass Post IDs
         vB.addTarget(self, action: #selector(FirstViewController.voiceBtnHandler(sender:)), for: UIControlEvents.touchUpInside)
         
+        tB.addTarget(self, action: #selector(FirstViewController.textBtnHandler(sender:)), for: UIControlEvents.touchUpInside)
+        
+        
         userCellPosts = uPostsList[indexPath.row]
-        print("postrow",userCellPosts)
+//        print("postrow",userCellPosts)
+        
         user.text = userCellPosts.author
         let imgurl = userCellPosts.pathToImage
         let url = NSURL(string: imgurl)
@@ -136,10 +146,9 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             cell.postId=self.uPostsList[indexPath.row].postId
             self.valueToPass=self.uPostsList[indexPath.row].postId
            
-            print("show>>>>>>\(self.valueToPass)")
+            print("show Post ID in First View Controller >>>>>>\(self.valueToPass)")
         }
         
-//         performSegue(withIdentifier: "do", sender: self)
         return cell
     }
     
@@ -160,7 +169,15 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.userProfile.fullName = dictionary["fullName"] as! String
                 self.userProfile.profileImage = dictionary["profileImage"] as! String
                 //print("fullName",self.userProfile.fullName)
+             if let statusTemp = dictionary["userStatus"] as! String!
+             {
+                if statusTemp != nil {
+                    self.userProfile.status = statusTemp
+//                    print(statusTemp)
+                }
+                }
                 self.userProfileName.text = self.userProfile.fullName
+                self.showStatus.text = self.userProfile.status
                 let url = NSURL(string: self.userProfile.profileImage)
                 let data = NSData(contentsOf: url! as URL) // this URL convert into Data
                 if data != nil {  //Some time Data value will be nil so we need to validate such things
@@ -170,6 +187,10 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
                 
             
+            }
+            
+            else{
+                //fetch latest post from permanent friend's profile
             }
 
             DispatchQueue.main.async {
@@ -189,7 +210,7 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 let userID = FIRAuth.auth()?.currentUser?.uid
                 if(userID == dictn["uId"] as? String){
                 //print("postdictvalue",dict.values,"count",dict.count)
-                print( "snapKey",snaps.key, "hello")
+//                print( "snapKey",snaps.key, "hello")
                 userPost.author = dictn["displayName"] as! String
                 userPost.likes = String(describing: dictn["likes"]) 
                 userPost.pathToImage = dictn["pathToImage"] as! String
@@ -253,7 +274,14 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
            
                 let controller = segue.destination as! AudioRecorder
                 controller.pid = self.valueToPass
-                print("PID from Segue \(self.valueToPass)")
+                print("PID from Segue in FVC Do\(self.valueToPass)")
+            
+        }
+        else if segue.identifier == "textSend" {
+            
+            let commentsController = segue.destination as! CommentsViewController
+            commentsController.pid = self.valueToPass
+            print("PID from Segue in FVC textSend \(self.valueToPass)")
             
         }
     }
@@ -261,7 +289,12 @@ class FirstViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func voiceBtnHandler(sender:UIButton)
     {
          self.performSegue(withIdentifier: "do", sender:self)
-        }
+    }
+    
+    func textBtnHandler(sender:UIButton)
+    {
+        self.performSegue(withIdentifier: "textSend", sender:self)
+    }
        
     
     

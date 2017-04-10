@@ -36,5 +36,7 @@
 	<string>1:836063216027:ios:54f5f7586fbea708</string>
 	<key>DATABASE_URL</key>
 	<string>https://projectreall-35e59.firebaseio.com</string>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>to use music in file</string>
 </dict>
 </plist>
