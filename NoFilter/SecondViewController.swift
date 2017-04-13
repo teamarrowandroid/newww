@@ -14,7 +14,6 @@ struct UserProfile {
     var fullName: String = ""
     var phoneNumber: String = ""
     var profileImage: String = ""
-    
     var username: String = ""
     var uId: String = ""
     var email: String = ""
@@ -22,7 +21,7 @@ struct UserProfile {
     var status: String = ""
     func getDict() -> [String:Any] {
         let dict = ["username": self.username,
-                    "fullname": self.fullName,
+                    "fullName": self.fullName,
                     "profileImage":self.profileImage,
                     "phoneNumber":self.phoneNumber,
                     "email":self.email,

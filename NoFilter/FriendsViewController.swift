@@ -12,10 +12,13 @@ import FirebaseDatabase
 
 class FriendsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
-    var users = [UserProfile]()
-    //var userProfile = UserProfile()
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    var suggestedFriends = [UserProfile]()
     
+    var friends:[String] = ["1","2","3"]
+    
+    var sfCellPosts = UserProfile()
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -23,11 +26,8 @@ class FriendsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         super.viewDidLoad()
         print("fetching useres")
         fetchUsers();
-        // Do any additional setup after loading the view.
+       
     }
-    
-    let myFriendDemoString:[String] = ["A","B","C"]
-    let suggentedFriendsString:[String] = ["1","2","3"]
     
 
     override func didReceiveMemoryWarning() {
@@ -35,92 +35,72 @@ class FriendsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var returnValue = 0
-        switch (segmentedControl.selectedSegmentIndex) {
-        case 0:
-//            returnValue = myFriendDemoString.count;break
-            returnValue = users.count;break
-        case 1:
-            returnValue = suggentedFriendsString.count;break
-        default:
-            break
-        }
-        return returnValue
+    
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return suggestedFriends.count
     }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Getting the right element
-   //     let element = elements[indexPath.row]
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
         
-        // Instantiate a cell
-       let cell=tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ImageTableViewCell
-     
-        let user = cell.viewWithTag(2) as! UILabel
-        let imageView = cell.viewWithTag(1) as! UIImageView
-        let url = NSURL(string: self.users[indexPath.row].profileImage)
-        let data = NSData(contentsOf: url! as URL)
-        if data != nil {
-            imageView.image = UIImage(data: data! as Data)
-        }
-
+        let cell=tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ImageTableViewCell
+        let user=cell.viewWithTag(2) as! UILabel
+        let imgView=cell.viewWithTag(1) as! UIImageView
+        
         switch (segmentedControl.selectedSegmentIndex) {
         case 0:
-            //user.text = myFriendDemoString[indexPath.row]
-            user.text = self.users[indexPath.row].fullName
-             cell.addAsFriend.isHidden = false
-             cell.uId = self.users[indexPath.row].uId
-          //  print("From FriendsView \(self.users[indexPath.row].uId)")
+            
+            sfCellPosts = suggestedFriends[indexPath.row]
+            print("postrow",sfCellPosts)
+            user.text = sfCellPosts.fullName
+            let imgurl = sfCellPosts.profileImage
+            cell.addAsFriend.isHidden = false
+            cell.uId = self.sfCellPosts.uId
+            
+            let url = NSURL(string: imgurl)
+            let data = NSData(contentsOf: url! as URL)
+            if data != nil {
+                imgView.image = UIImage(data: data! as Data)
+            }
+            
             break
         case 1:
-            user.text = suggentedFriendsString[indexPath.row]
-            cell.addAsFriend.isHidden = true
+//            user.text = friends[indexPath.row]
+//            cell.addAsFriend.isHidden = true
             break
         default:
             break
         }
-
         return cell
     }
     
-    @IBAction func ItemSelected(_ sender: Any) {
-        tableView.reloadData()
-    }
-    
-
-    func fetchUsers() {
-        var userProfile = UserProfile()
-        let ref = FIRDatabase.database().reference()
-        self.users.removeAll()
-        ref.child("users").queryOrderedByKey().observeSingleEvent(of: .value, with: {
-            snapshot in
-          /*  if  let users = snapshot.value as? [String:Any] {
-                userProfile.fullName = users["fullName"] as! String
-                print(userProfile.fullName)
-                self.users.append(userProfile)
-            }*/
-            if snapshot.value is NSNull {
-                
-            }else {
-            let snapDic = snapshot.value as? NSDictionary
-            for child in snapDic! {
-             let childDic = child.value as? NSDictionary
-             userProfile.fullName = childDic?["fullName"] as! String
-             userProfile.profileImage = childDic?["profileImage"] as! String
-             userProfile.uId = childDic?["uId"] as! String
-             self.users.append(userProfile)
-                
-            }
-                
-            }
-        });
-        
-        
-    }
-    
-    func fectFriends() {
-        
-    }
-   
-
+    var array = [String]()
+    func fetchUsers(){
+        for i in array
+        {
+            
+        let eref = FIRDatabase.database().reference().child("users")
+            let eref = query.queryEqual(toValue: i)
+            eref.observeSingleEvent(of: .value, with: { (snapshot) in
+                for child in snapshot.children
+                {
+                    var item = UserProfile()
+                    if (child as AnyObject).hasChild("fullName") {
+                        item.fullName = ((snapshot.value as! NSDictionary)["fullName"] as? String)!
+                    }
+                    if (child as AnyObject).hasChild("profileImage") {
+                        item.profileImage = ((snapshot.value as! NSDictionary)["profileImage"] as? String)!
+                    }
+                    if (child as AnyObject).hasChild("uId") {
+                        item.uId = ((snapshot.value as! NSDictionary)["uId"] as? String)!
+                    }
+                    self.suggestedFriends.append(item)
+                    self.tableView.reloadData()
+                    print("Item: \(self.suggestedFriends.map { $0.fullName})")
+                }
+            })
+        }
 }
 
